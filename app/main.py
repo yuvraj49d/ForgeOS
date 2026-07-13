@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from app.configuration.settings import get_settings
 from app.shared.logger import setup_logger
 from app.middleware.request_logger import request_logging_middleware
+from app.workflow.models.task import Task
 
 settings = get_settings()
 logger = setup_logger()
@@ -33,3 +34,13 @@ async def ping():
     return {
         "message": "pong"
     }
+
+@app.get("/task")
+async def sample_task():
+
+    task = Task(
+        title="Build REST API",
+        description="Create a FastAPI inventory service using PostgreSQL."
+    )
+
+    return task

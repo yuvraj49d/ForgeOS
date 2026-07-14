@@ -1,12 +1,17 @@
 from fastapi import FastAPI
 
 from app.configuration.settings import get_settings
+from app.services.task_service import TaskService
 from app.shared.logger import setup_logger
 from app.middleware.request_logger import request_logging_middleware
 from app.workflow.models.task import Task
+from app.workflow.models.task import Task
+from app.workflow.models.task_create import TaskCreate
+from app.api.router import api_router
 
 settings = get_settings()
 logger = setup_logger()
+task_service = TaskService()
 
 app = FastAPI(
     title=settings.app_name,
@@ -19,28 +24,5 @@ app.middleware("http")(request_logging_middleware)
 async def startup():
     logger.info("ForgeOS is starting...")
 
+app.include_router(api_router)
 
-@app.get("/")
-async def health():
-    return {
-        "name": settings.app_name,
-        "version": settings.app_version,
-        "status": "healthy",
-    }
-
-
-@app.get("/ping")
-async def ping():
-    return {
-        "message": "pong"
-    }
-
-@app.get("/task")
-async def sample_task():
-
-    task = Task(
-        title="Build REST API",
-        description="Create a FastAPI inventory service using PostgreSQL."
-    )
-
-    return task

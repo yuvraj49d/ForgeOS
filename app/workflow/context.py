@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 
 from app.workflow.models.task import Task
 from app.workflow.state import WorkflowState
+from app.agents.models.execution_plan import ExecutionPlan
 
 
 class WorkflowContext(BaseModel):
@@ -17,6 +18,8 @@ class WorkflowContext(BaseModel):
     task: Task
 
     state: WorkflowState = WorkflowState.CREATED
+
+    execution_plan: ExecutionPlan | None = None
 
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC)

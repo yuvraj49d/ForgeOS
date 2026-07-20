@@ -29,9 +29,11 @@ class ExecutorRegistry:
         executor_type: str,
     ) -> BaseExecutor:
 
-        if executor_type not in self.executors:
+        executor = self.executors.get(executor_type)
+
+        if executor is None:
             raise ValueError(
                 f"No executor registered for '{executor_type}'."
             )
 
-        return self.executors[executor_type]
+        return executor

@@ -1,12 +1,13 @@
 from app.shared.logger import setup_logger
-from app.workflow import context
-from app.workflow import context
 from app.workflow.context import WorkflowContext
 from app.workflow.models.task import Task
 from app.workflow.state import WorkflowState
 from app.agents.planner import PlannerAgent
+from app.execution.engine import ExecutionEngine
 
 planner = PlannerAgent()
+execution_engine = ExecutionEngine()
+
 logger = setup_logger()
 
 
@@ -29,9 +30,23 @@ class WorkflowEngine:
         plan = planner.execute(context)
 
         context.execution_plan = plan
-        
-        self._transition(context, WorkflowState.READY)
-        self._transition(context, WorkflowState.COMPLETED)
+
+        self._transition(
+            context,
+            WorkflowState.READY,
+        )
+
+        self._transition(
+            context,
+            WorkflowState.EXECUTING,
+        )
+
+        execution_engine.execute(context)
+
+        self._transition(
+            context,
+            WorkflowState.COMPLETED,
+        )
 
         return context
 

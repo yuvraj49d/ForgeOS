@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 
 from app.agents.models.execution_plan import PlanStep
+from app.execution.models import ExecutionResult
 from app.workflow.context import WorkflowContext
 
 
 class BaseExecutor(ABC):
     """
-    Base class for every executor.
+    Base class for all ForgeOS executors.
     """
 
     @abstractmethod
@@ -14,8 +15,8 @@ class BaseExecutor(ABC):
         self,
         step: PlanStep,
         context: WorkflowContext,
-    ) -> None:
+    ) -> ExecutionResult:
         """
-        Execute a workflow step.
+        Execute a single workflow step.
         """
         raise NotImplementedError

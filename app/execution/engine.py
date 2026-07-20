@@ -27,20 +27,24 @@ class ExecutionEngine:
         )
 
         for step in context.execution_plan.steps:
+            try:
+                executor = self.registry.get_executor(step.executor_type)
+                result = executor.execute(step, context)
 
-            logger.info(
-                "Processing step %d",
-                step.order,
-            )
+            except Exception as ex:
+                logger.exception(
+                    "Execution failed for step %d",
+                    step.order,
+                )
 
-            executor = self.registry.get_executor(
-                step.executor_type
-            )
+                result = ExecutionResult(
+                    step_order=step.order,
+                    executor=step.executor_type,
+                    status=ExecutionStatus.FAILED,
+                    error=str(ex),
+                )
 
-            executor.execute(
-                step,
-                context,
-            )
+            context.execution_results.append(result)
 
         logger.info(
             "Execution completed for workflow %s",

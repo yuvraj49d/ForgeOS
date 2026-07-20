@@ -3,9 +3,10 @@ from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
+from app.agents.models.execution_plan import ExecutionPlan
+from app.execution.models import ExecutionResult
 from app.workflow.models.task import Task
 from app.workflow.state import WorkflowState
-from app.agents.models.execution_plan import ExecutionPlan
 
 
 class WorkflowContext(BaseModel):
@@ -26,3 +27,7 @@ class WorkflowContext(BaseModel):
     )
 
     metadata: dict[str, str] = Field(default_factory=dict)
+
+    execution_results: list[ExecutionResult] = Field(
+        default_factory=list
+    )

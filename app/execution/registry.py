@@ -1,6 +1,6 @@
 from app.execution.base import BaseExecutor
 from app.execution.executors.mock import MockExecutor
-
+from app.execution.executors.filesystem import FilesystemExecutor
 
 class ExecutorRegistry:
     """
@@ -14,6 +14,11 @@ class ExecutorRegistry:
         self.register(
             "mock",
             MockExecutor(),
+        )
+
+        self.register(
+            "filesystem",
+            FilesystemExecutor(),
         )
 
     def register(

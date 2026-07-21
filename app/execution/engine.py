@@ -1,6 +1,7 @@
 from app.execution.registry import ExecutorRegistry
 from app.shared.logger import setup_logger
 from app.workflow.context import WorkflowContext
+from app.execution.models import ExecutionResult, ExecutionStatus
 
 logger = setup_logger()
 

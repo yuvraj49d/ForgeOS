@@ -4,6 +4,7 @@ from app.execution.executors.filesystem import (
     FilesystemExecutor,
 )
 from app.execution.models import ExecutionStatus
+from app.execution.types import ExecutorType
 from app.workflow.context import WorkflowContext
 from app.workflow.models.task import Task
 
@@ -27,7 +28,7 @@ def create_plan_step(
         order=1,
         title=f"{operation.name.replace('_', ' ').title()}",
         description=f"Execute {operation.value} operation.",
-        executor_type="filesystem",
+        executor_type=ExecutorType.FILESYSTEM.value,
         inputs={
             "operation": operation.value,
             "path": path,
